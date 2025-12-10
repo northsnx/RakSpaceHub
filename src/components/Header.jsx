@@ -18,17 +18,17 @@ function Header({ user }) {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-white/80 border-b border-slate-200 shadow-sm transition-all duration-300">
+    <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-white/20 border-b border-slate-200 shadow-sm transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-20">
 
           {/* --- Left: Logo --- */}
           <div className="flex-shrink-0 flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
-             <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-white shadow-md shadow-black/20">
-               <img src="favicon.png" alt="Logo" className="w-6 h-6" />
+             <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center text-white shadow-md shadow-black/20">
+               <img src="favicon.png" alt="Logo" className="w-10 h-10" />
              </div>
-             <span className="font-bold text-xl tracking-tight text-slate-800">
-               RakSpace<span className="text-indigo-600">Hub</span>
+             <span className="font-bold text-2xl tracking-tight text-slate-800">
+               Rak<span className="text-indigo-600">Hub</span>
              </span>
           </div>
 
@@ -87,7 +87,7 @@ function Header({ user }) {
 
       {/* --- Mobile Menu Dropdown --- */}
       {isMenuOpen && user && (
-        <div className="md:hidden bg-white border-t border-slate-100 px-4 py-4 space-y-3 shadow-lg absolute w-full left-0 top-16">
+        <div className="md:hidden bg-white border-t border-slate-100 px-4 py-4 space-y-3 shadow-lg absolute w-full left-0 top-20">
            <div className="flex items-center gap-3 mb-4 p-2 bg-slate-50 rounded-lg">
               <div className="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold">
                  {getInitials(user.displayName || user.email)}

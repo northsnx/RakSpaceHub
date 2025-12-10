@@ -17,7 +17,12 @@ function AdminDashboard({ user }) {
 
   // ดึงข้อมูลการ์ด
   useEffect(() => {
-    const q = query(collection(db, "cards"), orderBy("createdAt", "desc"));
+    const q = query(
+          collection(db, "cards"),
+          orderBy("isPinned", "desc"), // <-- เพิ่มอันนี้ (True จะมาก่อน False)
+          orderBy("createdAt", "desc") // <-- แล้วค่อยเรียงตามเวลา
+    );
+
     return onSnapshot(q, (snapshot) => {
       setCards(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
     });
@@ -33,8 +38,9 @@ function AdminDashboard({ user }) {
         title: newTitle,
         content: newContent,
         createdAt: serverTimestamp(),
-        createdBy: auth.currentUser ? auth.currentUser.uid : "unknown", 
-      });
+        createdBy: auth.currentUser ? auth.currentUser.uid : "unknown",
+        isPinned: false, // <-- ⭐ เพิ่มบรรทัดนี้ เพื่อให้ทุกโพสต์ใหม่มี field นี้
+    });
 
       setNewTitle('');
       setNewContent('');

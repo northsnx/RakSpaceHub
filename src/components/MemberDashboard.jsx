@@ -6,17 +6,22 @@ import CardItem from './CardItem';
 import LoadingSkeleton from './LoadingSkeleton';
 import Footer from './Footer';
 import Header from './Header';
+import BackToTop from './BackToTop';
 
 function MemberDashboard({ user }) {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   // 1. เพิ่ม State สำหรับเก็บคำค้นหา
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    const q = query(collection(db, "cards"), orderBy("createdAt", "desc"));
-    
+    const q = query(
+      collection(db, "cards"),
+      orderBy("isPinned", "desc"), // <-- เพิ่มอันนี้ (True จะมาก่อน False)
+      orderBy("createdAt", "desc") // <-- แล้วค่อยเรียงตามเวลา
+    );
+
     // Subscribe to realtime updates
     const unsubscribe = onSnapshot(q, (snapshot) => {
       setCards(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
@@ -41,13 +46,13 @@ function MemberDashboard({ user }) {
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col">
-      
+
       {/* 1. Navbar */}
       <Header user={user} />
 
       {/* 2. Main Content Area */}
       <main className="flex-1">
-        
+
         {/* --- Hero / Welcome Section --- */}
         <div className="bg-white border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -62,10 +67,10 @@ function MemberDashboard({ user }) {
 
         {/* --- Content Body --- */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          
+
           {/* --- Search & Filter Container --- */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
-            
+
             {/* 3. Search Box UI (เพิ่มใหม่ตรงนี้) */}
             <div className="relative w-full md:w-96">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
@@ -84,15 +89,15 @@ function MemberDashboard({ user }) {
 
             {/* Filter Tabs (Visual Only) */}
             <div className="flex items-center gap-3 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
-               <button className="px-5 py-2 bg-slate-800 text-white rounded-full text-sm font-medium shadow-md transition-transform active:scale-95 whitespace-nowrap">
-                 ทั้งหมด
-               </button>
-               <button className="px-5 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-sm font-medium hover:bg-slate-50 hover:border-slate-300 transition-colors whitespace-nowrap">
-                 ประกาศ 📢
-               </button>
-               <button className="px-5 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-sm font-medium hover:bg-slate-50 hover:border-slate-300 transition-colors whitespace-nowrap">
-                 ทั่วไป 💬
-               </button>
+              <button className="px-5 py-2 bg-slate-800 text-white rounded-full text-sm font-medium shadow-md transition-transform active:scale-95 whitespace-nowrap">
+                ทั้งหมด
+              </button>
+              <button className="px-5 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-sm font-medium hover:bg-slate-50 hover:border-slate-300 transition-colors whitespace-nowrap">
+                ประกาศ 📢
+              </button>
+              <button className="px-5 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-sm font-medium hover:bg-slate-50 hover:border-slate-300 transition-colors whitespace-nowrap">
+                ทั่วไป 💬
+              </button>
             </div>
           </div>
 
@@ -100,10 +105,10 @@ function MemberDashboard({ user }) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredCards.map(card => (
               <div key={card.id} className="relative group">
-                 <CardItem
-                   card={card}
-                   role="member"
-                 />
+                <CardItem
+                  card={card}
+                  role="member"
+                />
               </div>
             ))}
           </div>
@@ -126,12 +131,12 @@ function MemberDashboard({ user }) {
                 {searchTerm ? 'ไม่พบข้อมูลที่ค้นหา' : 'ยังไม่มีการอัปเดต'}
               </h3>
               <p className="text-slate-500 max-w-sm mt-1">
-                {searchTerm 
-                  ? `ไม่พบผลลัพธ์สำหรับ "${searchTerm}" ลองใช้คำค้นหาอื่นดูนะครับ` 
+                {searchTerm
+                  ? `ไม่พบผลลัพธ์สำหรับ "${searchTerm}" ลองใช้คำค้นหาอื่นดูนะครับ`
                   : 'ขณะนี้ยังไม่มีโพสต์ใหม่จากผู้ดูแลระบบ กรุณากลับมาเช็คใหม่อีกครั้งในภายหลัง'}
               </p>
               {searchTerm && (
-                <button 
+                <button
                   onClick={() => setSearchTerm('')}
                   className="mt-4 text-indigo-600 hover:text-indigo-700 font-medium text-sm"
                 >
@@ -143,7 +148,8 @@ function MemberDashboard({ user }) {
 
         </div>
       </main>
-
+      
+      <BackToTop />
       <Footer />
     </div>
   );
