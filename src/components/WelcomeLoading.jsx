@@ -24,7 +24,7 @@ function WelcomeLoading() {
 
         {/* Text Animation */}
         <h1 className="text-3xl font-extrabold text-slate-800 tracking-tight mb-2">
-          RakSpace<span className="text-indigo-600">Hub</span>
+          Rak<span className="text-indigo-600">Hub</span>
         </h1>
         
         <div className="flex items-center gap-2 text-slate-400 text-sm font-medium">
@@ -36,7 +36,7 @@ function WelcomeLoading() {
 
       {/* Footer Credit (Optional) */}
       <div className="absolute bottom-10 text-slate-300 text-xs">
-        &copy; 2025 RakSpaceHub. | Design by northsnx.
+        RakHub | &copy; 2026 CHAOKUAY Me Code. All Rights Reserved
       </div>
 
     </div>
